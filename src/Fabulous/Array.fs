@@ -311,7 +311,7 @@ module StackAllocatedCollections =
         let find (test: 'v -> bool) (arr: StackArray3<'v> inref) : 'v =
             match arr with
             | Few(struct (size, v0, v1, v2)) ->
-                match (size, test v0, test v1, test v2) with
+                match struct (size, test v0, test v1, test v2) with
                 | Size.One, true, _, _
                 | Size.Two, true, _, _
                 | Size.Three, true, _, _ -> v0
@@ -333,7 +333,7 @@ module StackAllocatedCollections =
                 | Size.One -> arr
                 | Size.Two -> if (getKey v0 > getKey v1) then two(v1, v0) else arr
                 | Size.Three ->
-                    match (getKey v0, getKey v1, getKey v1) with
+                    match struct (getKey v0, getKey v1, getKey v1) with
                     // abc acb bac bca cba cab
 
                     //  a, c, b
@@ -376,9 +376,9 @@ module StackAllocatedCollections =
 
 
         let combine (a: StackArray3<'v>) (b: StackArray3<'v>) : StackArray3<'v> =
-            match (a, b) with
+            match struct (a, b) with
             | Few(struct (asize, a0, a1, a2)), Few(struct (bsize, b0, b1, b2)) ->
-                match (asize, bsize) with
+                match struct (asize, bsize) with
                 | Size.Zero, _ -> b
                 | _, Size.Zero -> a
                 | Size.One, Size.One -> two(a0, b0)
